@@ -6,6 +6,9 @@ TIC TAC TOE game
 @author: jcarl
 '''
 
+import pygame
+import GUI.Screen as GUI
+
 def createBoard():
     board = [ ['-' for x in range(3)] for y in range(3)]
     return board
@@ -77,10 +80,27 @@ if __name__ == '__main__':
     isDigit = False
     validPos = False
     
+    display = GUI.renderGUIBoard()
+    
     while(not endGame):
 
         print("\n")
         displayBoard(boardGame)
+        
+        # GUI
+        for event in pygame.event.get():
+            #print(event)
+            if event.type==pygame.QUIT:
+                endGame = True
+            GUI.drawBoard(display)
+            
+            if event.type==pygame.MOUSEBUTTONUP:
+                posSymbol = GUI.detSymbolPosO(GUI.cellClicked())
+                print(posSymbol)
+                GUI.drawSymbolO(display,posSymbol)
+            
+            pygame.display.update()
+
         playAgain = True
         
         ''' caso o numero seja par e a vez do player2 '''
