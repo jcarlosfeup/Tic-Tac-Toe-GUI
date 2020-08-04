@@ -122,9 +122,12 @@ def drawSymbolO(display,pos):
     radius = 80
     symbolWidth = 5
     pygame.draw.circle(display,redColor,pos,radius,symbolWidth)
+    
 
 
-def renderTurn(display,player):
+def renderStatement(display,player,statement):
+    
+    padding = 10
     
     if player=='X':
         letterColor = blueColor
@@ -132,17 +135,18 @@ def renderTurn(display,player):
     else:
         letterColor = redColor
         player_no = 2
-    
+
     score_font = pygame.font.SysFont("arial", 35)
+    
+    #replaces the TBD by the number of the player
+    statReplaced = statement.replace("TBD",str(player_no))
+    
     #clears area if something is there first
-    display.fill(pygame.Color("white"), (boardWidth/3, boardHeight, 200, 40))
-    value = score_font.render("Player " + str(player_no) + " turn", True,letterColor)
-    display.blit(value, [boardWidth/3,boardHeight])
+    display.fill(pygame.Color("white"), ((boardWidth/2)-(len(statReplaced)*5)-padding,boardHeight+padding, 300, 40))
     
-def clearTurn(display):
-    
-    display.fill(pygame.Color("black"), (0, boardHeight, 110, 40))
-    
+    print( (boardWidth/2)-(len(statReplaced)))
+    value = score_font.render(statReplaced,True,letterColor)
+    display.blit(value, [ (boardWidth/2)-(len(statReplaced)*5),boardHeight+padding])
     
 
 def renderGUIBoard():
@@ -167,7 +171,6 @@ if __name__ == '__main__':
     
     pygame.display.set_caption('Tic Tac Toe')
 
-    renderTurn(display,2)
     drawBoard(display)
     
     pygame.display.update()

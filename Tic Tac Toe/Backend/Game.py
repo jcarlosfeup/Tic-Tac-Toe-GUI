@@ -89,31 +89,35 @@ def winGame(board):
     return False
 
 
-if __name__ == '__main__':
+def draw(cells):
+    #it's a draw if all the cells are occupied
+    return len(cells)==9
         
+
+
+
+if __name__ == '__main__':
+
     boardGame = createBoard()
-    
+
     print("Welcome to the TIC TAC TOE game in Python!")
+    turnStatement = "Player TBD turn"
+    winStatement = "Player TBD won the game!"
 
-    countPlays = 0
-
+    countPlays = 1
+    waitingTime = 0
     endGame = False
-    isDigit = False
-    validPos = False
-    
+    receivedMove = True
+    exit = False
     #using a set because you cannot have repeated cells
     occupiedCells = set()
-    
+
     display = GUI.renderGUIBoard()
     GUI.drawBoard(display)
     
-    receivedMove = True
-    
-    while(not endGame):
+    while(True):
 
-        #displayBoard(boardGame)
-        if receivedMove:
-            
+        if receivedMove and (not endGame):
             receivedMove = False
         
             #caso o numero seja par e a vez do player2
@@ -126,28 +130,30 @@ if __name__ == '__main__':
             
             # renders text with player turn
             score_font = pygame.font.SysFont("arial", 35)
-            GUI.renderTurn(display,player)
+            
+            
+            GUI.renderStatement(display, player, turnStatement)
             pygame.display.update()
             
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 endGame = True
+                waitingTime = 1000
+                break
                 
-            #print(event)
             if event.type == pygame.MOUSEBUTTONUP:
                 cell = GUI.cellClicked()
                 
                 #checks if cell is empty
-                if cell not in occupiedCells:
+                if cell not in occupiedCells and (not endGame):
+                    
                     occupiedCells.add(cell)
 
                     #basic logic update
                     posX,posY = convertToCoords(cell)
-                    print(posX)
-                    print(posY)
                     boardGame = playMove(boardGame,posY,posX,player)
                     displayBoard(boardGame)
-                    
+
                     posSymbol = GUI.detSymbolPosO(cell)
                 
                     if player=='O':
@@ -157,50 +163,26 @@ if __name__ == '__main__':
                 
                     receivedMove = True
                     countPlays += 1
-                else:
-                    pass
-                    #TODO render occupied
         
                 pygame.display.update()
         
-        playAgain = True
-        isDigit = False
+        if draw(occupiedCells):
+            GUI.renderStatement(display,player,"It's a draw!")
+            waitingTime = 7000
+            pygame.display.update()
+            endGame = True
         
-        if winGame(boardGame): endGame = True
-        
-        """while(playAgain or (not validPos) or (not isDigit)):
-                
-            posX = input("\nPlease choose position X from 1,2,3: ")
-            posY = input("Please choose position Y from 1,2,3: ")
+        if winGame(boardGame):
+            GUI.renderStatement(display, player, winStatement)
+            waitingTime = 7000
+            pygame.display.update()
+            endGame = True
             
-            if posX.isdigit() and posY.isdigit():
-                posX = int(posX)
-                posY = int(posY)
-                isDigit = True
-            else:
-                print("\nPlease insert a digit for each of the positions.")
-            
-            if isDigit:
-                if validPosition(posX) and validPosition(posY):
-                    validPos = True
-                else:
-                    print("\nYou choose an invalid position! Please choose another one.")
-
-            if validPos:
-                if (not cellOccupied(boardGame,posX,posY)):
-                    boardGame = playMove(boardGame,posX,posY,player)
-                    playAgain = False
-                else:
-                    print("This cell is already occupied, please choose another one.")"""
-
+        if endGame:
+            #time in milisecconds
+            pygame.time.wait(waitingTime)
+            break
         
-
-        
-        
-    
     pygame.quit()
     quit()
-    
-    displayBoard(boardGame)
-    print("\nGame finished with " + str(countPlays) + " plays made!")
 
