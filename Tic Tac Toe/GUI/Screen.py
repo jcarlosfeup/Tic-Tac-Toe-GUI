@@ -1,35 +1,39 @@
 '''
-Created on 30/07/2020
+Created on 05/08/2020
 
-@author: jcarl
+TIC TAC TOE game
+
+Module providing the Graphical user interface logic
+
+@author: Carlos Portela
 '''
-
 import pygame
 
-boardWidth=600
-boardHeight=600
-boardHeightMargin=700
+BOARD_WIDTH=600
+BOARD_HEIGHT=600
+BOARD_HEIGHT_MARGIN=700
+CELL_WIDTH = int(BOARD_WIDTH/3)
+CELL_HEIGHT = int(BOARD_HEIGHT/3)
 
-cellWidth = int(boardWidth/3)
-cellHeight = int(boardHeight/3)
-
-blackColor=(0,0,0)
-blueColor=(0,0,255)
-redColor=(255,0,0)
+BLACK_COLOR=(0,0,0)
+BLUE_COLOR=(0,0,255)
+RED_COLOR=(255,0,0)
 
 
 def drawBoard(display):
     
+    thickness = 20
+    
     #vertical lines
-    pygame.draw.rect(display,blackColor,[200,0,20,boardHeight],0)
-    pygame.draw.rect(display,blackColor,[400,0,20,boardHeight],0)
+    pygame.draw.rect(display,BLACK_COLOR,[CELL_WIDTH,0,thickness,BOARD_HEIGHT],0)
+    pygame.draw.rect(display,BLACK_COLOR,[CELL_WIDTH*2,0,thickness,BOARD_HEIGHT],0)
     
     #horizontal lines
-    pygame.draw.rect(display,blackColor,[0,200,boardWidth,20],0)
-    pygame.draw.rect(display,blackColor,[0,400,boardWidth,20],0)
+    pygame.draw.rect(display,BLACK_COLOR,[0,CELL_HEIGHT,BOARD_WIDTH,thickness],0)
+    pygame.draw.rect(display,BLACK_COLOR,[0,CELL_HEIGHT*2,BOARD_WIDTH,thickness],0)
 
 
-#returns an integer (1-6) representing the area of the cell that was clicked
+#returns an integer (1-9) representing the area of the cell that was clicked
 #1  2  3
 #4  5  6
 #7  8  9
@@ -37,51 +41,51 @@ def cellClicked():
     
     posx,posy = pygame.mouse.get_pos()
     
-    if posx >= 0 and posx <= cellWidth and posy >= 0 and posy <= cellHeight:
+    if posx >= 0 and posx <= CELL_WIDTH and posy >= 0 and posy <= CELL_HEIGHT:
         return 1
-    elif posx >= cellWidth and posx <= (cellWidth*2) and posy >= 0 and posy <= cellHeight:
+    elif posx >= CELL_WIDTH and posx <= (CELL_WIDTH*2) and posy >= 0 and posy <= CELL_HEIGHT:
         return 2
-    elif posx >= (cellWidth*2) and posx <= boardWidth and posy >= 0 and posy <= cellHeight:
+    elif posx >= (CELL_WIDTH*2) and posx <= BOARD_WIDTH and posy >= 0 and posy <= CELL_HEIGHT:
         return 3
-    elif posx >= 0 and posx <= cellWidth and posy >= cellHeight and posy <= (cellHeight*2):
+    elif posx >= 0 and posx <= CELL_WIDTH and posy >= CELL_HEIGHT and posy <= (CELL_HEIGHT*2):
         return 4
-    elif posx >= cellWidth and posx <= (cellWidth*2) and posy >= cellHeight and posy <= (cellHeight*2):
+    elif posx >= CELL_WIDTH and posx <= (CELL_WIDTH*2) and posy >= CELL_HEIGHT and posy <= (CELL_HEIGHT*2):
         return 5
-    elif posx >= (cellWidth*2) and posx <= boardWidth and posy >= cellHeight and posy <= (cellHeight*2):
+    elif posx >= (CELL_WIDTH*2) and posx <= BOARD_WIDTH and posy >= CELL_HEIGHT and posy <= (CELL_HEIGHT*2):
         return 6
-    elif posx >= 0 and posx <= cellWidth and posy >= (cellHeight*2) and posy <= boardHeight:
+    elif posx >= 0 and posx <= CELL_WIDTH and posy >= (CELL_HEIGHT*2) and posy <= BOARD_HEIGHT:
         return 7
-    elif posx >= cellWidth and posx <= (cellWidth*2) and posy >= (cellHeight*2) and posy <= boardHeight:
+    elif posx >= CELL_WIDTH and posx <= (CELL_WIDTH*2) and posy >= (CELL_HEIGHT*2) and posy <= BOARD_HEIGHT:
         return 8
-    elif posx >= (cellWidth*2) and posx <= boardWidth and posy >= (cellHeight*2) and posy <= boardHeight:
+    elif posx >= (CELL_WIDTH*2) and posx <= BOARD_WIDTH and posy >= (CELL_HEIGHT*2) and posy <= BOARD_HEIGHT:
         return 9
     else:
         0
         
 def detSymbolPosO(cellNumber):
     
-    posX = int(boardWidth/6)
-    posY = int(boardHeight/6)
+    posX = int(BOARD_WIDTH/6)
+    posY = int(BOARD_HEIGHT/6)
     margin = 10
-    
+
     if cellNumber==1:
         return (posX,posY)
     elif cellNumber==2:
-        return ( cellWidth+posX++margin,posY)
+        return ( CELL_WIDTH+posX++margin,posY)
     elif cellNumber==3:
-        return ( (margin+cellWidth*2)+posX,posY)
+        return ( (margin+CELL_WIDTH*2)+posX,posY)
     elif cellNumber==4:
-        return (posX,cellHeight+posY+margin)
+        return (posX,CELL_HEIGHT+posY+margin)
     elif cellNumber==5:
-        return (cellWidth+posX+margin,cellHeight+posY+margin)
+        return (CELL_WIDTH+posX+margin,CELL_HEIGHT+posY+margin)
     elif cellNumber==6:
-        return ( (margin+cellWidth*2)+posX,cellHeight+posY+margin)
+        return ( (margin+CELL_WIDTH*2)+posX,CELL_HEIGHT+posY+margin)
     elif cellNumber==7:
-        return (posX,(cellHeight*2)+posY+margin)
+        return (posX,(CELL_HEIGHT*2)+posY+margin)
     elif cellNumber==8:
-        return (cellWidth+posX+margin,(cellHeight*2)+posY+margin)
+        return (CELL_WIDTH+posX+margin,(CELL_HEIGHT*2)+posY+margin)
     elif cellNumber==9:
-        return ( (cellWidth*2)+posX+margin,(cellHeight*2)+posY+margin)
+        return ( (CELL_WIDTH*2)+posX+margin,(CELL_HEIGHT*2)+posY+margin)
     
 
 def drawSymbolX(display,cellNumber):
@@ -90,39 +94,38 @@ def drawSymbolX(display,cellNumber):
     symbolWidth=5
     
     if cellNumber==1:
-        pygame.draw.line(display, blueColor,(margin,margin),(cellWidth-margin,cellHeight-margin),symbolWidth)
-        pygame.draw.line(display, blueColor,(margin,cellHeight-margin),(cellWidth-margin,margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(margin,margin),(CELL_WIDTH-margin,CELL_HEIGHT-margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(margin,CELL_HEIGHT-margin),(CELL_WIDTH-margin,margin),symbolWidth)
     elif cellNumber==2:
-        pygame.draw.line(display, blueColor,(cellWidth+(margin*2),margin),( (cellWidth*2)-margin,cellHeight-margin),symbolWidth)
-        pygame.draw.line(display, blueColor,(cellWidth+(margin*2),cellHeight-margin),( (cellWidth*2)-margin,margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(CELL_WIDTH+(margin*2),margin),( (CELL_WIDTH*2)-margin,CELL_HEIGHT-margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(CELL_WIDTH+(margin*2),CELL_HEIGHT-margin),( (CELL_WIDTH*2)-margin,margin),symbolWidth)
     elif cellNumber==3:
-        pygame.draw.line(display, blueColor,((cellWidth*2)+(margin*2),margin),((cellWidth*3)-margin,cellHeight-margin),symbolWidth)
-        pygame.draw.line(display, blueColor,((cellWidth*2)+(margin*2),cellHeight-margin),( (cellWidth*3)-margin,margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,((CELL_WIDTH*2)+(margin*2),margin),((CELL_WIDTH*3)-margin,CELL_HEIGHT-margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,((CELL_WIDTH*2)+(margin*2),CELL_HEIGHT-margin),( (CELL_WIDTH*3)-margin,margin),symbolWidth)
     elif cellNumber==4:
-        pygame.draw.line(display, blueColor,(margin,cellHeight+(margin*2)),(cellWidth-margin,(cellHeight*2)-margin),symbolWidth)
-        pygame.draw.line(display, blueColor,(margin,(cellHeight*2)-margin),(cellWidth-margin,cellHeight+(margin*2)),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(margin,CELL_HEIGHT+(margin*2)),(CELL_WIDTH-margin,(CELL_HEIGHT*2)-margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(margin,(CELL_HEIGHT*2)-margin),(CELL_WIDTH-margin,CELL_HEIGHT+(margin*2)),symbolWidth)
     elif cellNumber==5:
-        pygame.draw.line(display, blueColor,(cellWidth+(margin*2),cellHeight+(margin*2)),((cellWidth*2)-margin,(cellHeight*2)-margin),symbolWidth)
-        pygame.draw.line(display, blueColor,(cellWidth+(margin*2),(cellHeight*2)-margin),((cellWidth*2)-margin,cellHeight+(margin*2)),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(CELL_WIDTH+(margin*2),CELL_HEIGHT+(margin*2)),((CELL_WIDTH*2)-margin,(CELL_HEIGHT*2)-margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(CELL_WIDTH+(margin*2),(CELL_HEIGHT*2)-margin),((CELL_WIDTH*2)-margin,CELL_HEIGHT+(margin*2)),symbolWidth)
     elif cellNumber==6:
-        pygame.draw.line(display, blueColor,((cellWidth*2)+(margin*2),cellHeight+(margin*2)),((cellWidth*3)-margin,(cellHeight*2)-margin),symbolWidth)
-        pygame.draw.line(display, blueColor,((cellWidth*2)+(margin*2),(cellHeight*2)-margin),((cellWidth*3)-margin,cellHeight+(margin*2)),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,((CELL_WIDTH*2)+(margin*2),CELL_HEIGHT+(margin*2)),((CELL_WIDTH*3)-margin,(CELL_HEIGHT*2)-margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,((CELL_WIDTH*2)+(margin*2),(CELL_HEIGHT*2)-margin),((CELL_WIDTH*3)-margin,CELL_HEIGHT+(margin*2)),symbolWidth)
     elif cellNumber==7:
-        pygame.draw.line(display, blueColor,(margin,(cellHeight*2)+(margin*2)),(cellWidth-margin,(cellHeight*3)-margin),symbolWidth)
-        pygame.draw.line(display, blueColor,(margin,(cellHeight*3)-margin),(cellWidth-margin,(cellHeight*2)+(margin*2)),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(margin,(CELL_HEIGHT*2)+(margin*2)),(CELL_WIDTH-margin,(CELL_HEIGHT*3)-margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(margin,(CELL_HEIGHT*3)-margin),(CELL_WIDTH-margin,(CELL_HEIGHT*2)+(margin*2)),symbolWidth)
     elif cellNumber==8:
-        pygame.draw.line(display, blueColor,(cellWidth+(margin*2),(cellHeight*2)+(margin*2)),((cellWidth*2)-margin,(cellHeight*3)-margin),symbolWidth)
-        pygame.draw.line(display, blueColor,(cellWidth+(margin*2),(cellHeight*3)-margin),((cellWidth*2)-margin,(cellHeight*2)+(margin*2)),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(CELL_WIDTH+(margin*2),(CELL_HEIGHT*2)+(margin*2)),((CELL_WIDTH*2)-margin,(CELL_HEIGHT*3)-margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,(CELL_WIDTH+(margin*2),(CELL_HEIGHT*3)-margin),((CELL_WIDTH*2)-margin,(CELL_HEIGHT*2)+(margin*2)),symbolWidth)
     elif cellNumber==9:
-        pygame.draw.line(display, blueColor,((cellWidth*2)+(margin*2),(cellHeight*2)+(margin*2)),((cellWidth*3)-margin,(cellHeight*3)-margin),symbolWidth)
-        pygame.draw.line(display, blueColor,((cellWidth*2)+(margin*2),(cellHeight*3)-margin),((cellWidth*3)-margin,(cellHeight*2)+(margin*2)),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,((CELL_WIDTH*2)+(margin*2),(CELL_HEIGHT*2)+(margin*2)),((CELL_WIDTH*3)-margin,(CELL_HEIGHT*3)-margin),symbolWidth)
+        pygame.draw.line(display, BLUE_COLOR,((CELL_WIDTH*2)+(margin*2),(CELL_HEIGHT*3)-margin),((CELL_WIDTH*3)-margin,(CELL_HEIGHT*2)+(margin*2)),symbolWidth)
     
     
 def drawSymbolO(display,pos):
     radius = 80
     symbolWidth = 5
-    pygame.draw.circle(display,redColor,pos,radius,symbolWidth)
-    
+    pygame.draw.circle(display,RED_COLOR,pos,radius,symbolWidth)
 
 
 def renderStatement(display,player,statement):
@@ -130,10 +133,10 @@ def renderStatement(display,player,statement):
     padding = 10
     
     if player=='X':
-        letterColor = blueColor
+        letterColor = BLUE_COLOR
         player_no = 1
     else:
-        letterColor = redColor
+        letterColor = RED_COLOR
         player_no = 2
 
     score_font = pygame.font.SysFont("arial", 35)
@@ -142,17 +145,16 @@ def renderStatement(display,player,statement):
     statReplaced = statement.replace("TBD",str(player_no))
     
     #clears area if something is there first
-    display.fill(pygame.Color("white"), ((boardWidth/2)-(len(statReplaced)*5)-padding,boardHeight+padding, 300, 40))
+    display.fill(pygame.Color("white"), ((BOARD_WIDTH/2)-(len(statReplaced)*6)-padding,BOARD_HEIGHT+padding, 300, 40))
     
-    print( (boardWidth/2)-(len(statReplaced)))
     value = score_font.render(statReplaced,True,letterColor)
-    display.blit(value, [ (boardWidth/2)-(len(statReplaced)*5),boardHeight+padding])
+    display.blit(value, [ (BOARD_WIDTH/2)-(len(statReplaced)*6),BOARD_HEIGHT+padding])
     
 
 def renderGUIBoard():
     pygame.init()
-    
-    display = pygame.display.set_mode(size=(boardWidth, boardHeightMargin))
+
+    display = pygame.display.set_mode(size=(BOARD_WIDTH, BOARD_HEIGHT_MARGIN))
     display.fill([255,255,255])
     
     pygame.display.set_caption('Tic Tac Toe')
@@ -160,36 +162,4 @@ def renderGUIBoard():
     
     pygame.display.update()
     
-    return display
-    
-
-if __name__ == '__main__':
-    
-    pygame.init()
-    display = pygame.display.set_mode(size=(boardWidth, boardHeightMargin))
-    display.fill([255,255,255])
-    
-    pygame.display.set_caption('Tic Tac Toe')
-
-    drawBoard(display)
-    
-    pygame.display.update()
-
-    endGame = False
-    while not endGame:
-        for event in pygame.event.get():
-            #print(event)
-            if event.type==pygame.QUIT:
-                endGame = True
-            
-            if event.type==pygame.MOUSEBUTTONUP:
-                posSymbol = detSymbolPosO(cellClicked())
-                print(posSymbol)
-                #drawSymbol(display,posSymbol,'X')
-            
-            pygame.display.update()
-   
-    pygame.quit()
-    quit()
-   
-                                     
+    return display                    

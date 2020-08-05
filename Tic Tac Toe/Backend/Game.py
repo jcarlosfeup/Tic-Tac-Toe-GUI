@@ -1,16 +1,17 @@
 '''
-Created on 16/06/2020
+Created on 05/08/2020
 
 TIC TAC TOE game
 
-@author: jcarl
-'''
+Module providing the game main logic
 
+@author: Carlos Portela
+'''
 import pygame
 import GUI.Screen as GUI
 
 def createBoard():
-    board = [ ['-' for x in range(3)] for y in range(3)]
+    board = [ ['-' for _ in range(3)] for _ in range(3)]
     return board
 
 
@@ -22,24 +23,16 @@ def displayBoard(board):
 
 
 def cellOccupied(board,x,y):
-    if board[y-1][x-1] != '-':
-        return True
-    else:
-        return False
+    return board[y-1][x-1] != '-'
 
 
 def playMove(board,x,y,symbol):
-    
     board[y][x] = symbol
-    
     return board
 
 
 def validPosition(pos):
-    if pos != '' and pos in [1,2,3]:
-        return True
-    else:
-        return False
+    return pos != '' and pos in [1,2,3]
     
 def convertToCoords(boardPosition):
     
@@ -64,7 +57,7 @@ def convertToCoords(boardPosition):
             
 
 def winGame(board):
-    
+
     listPlaceholderX = ['X','X','X']
     listPlaceholderO = ['O','O','O']
     
@@ -92,8 +85,6 @@ def winGame(board):
 def draw(cells):
     #it's a draw if all the cells are occupied
     return len(cells)==9
-        
-
 
 
 if __name__ == '__main__':
@@ -108,7 +99,7 @@ if __name__ == '__main__':
     waitingTime = 0
     endGame = False
     receivedMove = True
-    exit = False
+
     #using a set because you cannot have repeated cells
     occupiedCells = set()
 
@@ -120,24 +111,21 @@ if __name__ == '__main__':
         if receivedMove and (not endGame):
             receivedMove = False
         
-            #caso o numero seja par e a vez do player2
+            #if even number, it's player 2 turn
             if countPlays%2 == 0:
                 player = 'O'
-                print("\nIt's Player 2 turn with symbol " + player)
             else:
                 player = 'X'
-                print("\nIt's Player 1 turn with symbol " + player)
             
             # renders text with player turn
             score_font = pygame.font.SysFont("arial", 35)
-            
-            
             GUI.renderStatement(display, player, turnStatement)
             pygame.display.update()
             
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 endGame = True
+                #time in milliseconds
                 waitingTime = 1000
                 break
                 
@@ -155,7 +143,7 @@ if __name__ == '__main__':
                     displayBoard(boardGame)
 
                     posSymbol = GUI.detSymbolPosO(cell)
-                
+
                     if player=='O':
                         GUI.drawSymbolO(display,posSymbol)
                     else:
@@ -179,10 +167,8 @@ if __name__ == '__main__':
             endGame = True
             
         if endGame:
-            #time in milisecconds
             pygame.time.wait(waitingTime)
             break
         
     pygame.quit()
     quit()
-
